@@ -32,8 +32,8 @@ public class Strategy4 implements SearchStrategy {
 
     @Override
     public Node[] solve(SearchProblem p) throws Exception{
-        List<MagicSquareProblem.State> explored = new ArrayList<>();
-        MagicSquareProblem.State currentState = p.getInitialState();
+        List<State> explored = new ArrayList<>();
+        State currentState = p.getInitialState();
         Node init = new Node(currentState, null, null);
         Node[] nodeList = new Node[1024];
         int j=0;
@@ -46,10 +46,10 @@ public class Strategy4 implements SearchStrategy {
 
         while (!p.isGoal(currentState)){
             System.out.println((i++) + " - " + currentState + " is not a goal");
-            MagicSquareProblem.Action[] availableActions = p.actions(currentState);
+            Action[] availableActions = p.actions(currentState);
             boolean modified = false;
-            for (MagicSquareProblem.Action acc: availableActions) {
-                MagicSquareProblem.State sc = p.result(currentState, acc);
+            for (Action acc: availableActions) {
+                State sc = p.result(currentState, acc);
                 System.out.println((i++) + " - RESULT(" + currentState + ","+ acc + ")=" + sc);
                 if (!explored.contains(sc)) {
                     Node newNode = new Node(sc,init,acc);

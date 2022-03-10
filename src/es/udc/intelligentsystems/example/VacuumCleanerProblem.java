@@ -1,10 +1,11 @@
 package es.udc.intelligentsystems.example;
 
-import es.udc.intelligentsystems.MagicSquareProblem;
+import es.udc.intelligentsystems.Action;
+import es.udc.intelligentsystems.State;
 import es.udc.intelligentsystems.SearchProblem;
 
 public class VacuumCleanerProblem extends SearchProblem {
-    public static class VacuumCleanerState extends MagicSquareProblem.State {
+    public static class VacuumCleanerState extends State {
         public enum RobotPosition {LEFT, RIGHT};
         public enum DirtPosition {BOTH, RIGHT, LEFT, NONE};
 
@@ -40,7 +41,7 @@ public class VacuumCleanerProblem extends SearchProblem {
         }
     }
 
-    public static class VacuumCleanerAction extends MagicSquareProblem.Action {
+    public static class VacuumCleanerAction extends Action {
         public enum Type {LEFT, RIGHT, CLEAN};
 
         private Type type;
@@ -55,12 +56,12 @@ public class VacuumCleanerProblem extends SearchProblem {
         }
 
         @Override
-        public boolean isApplicable(MagicSquareProblem.State st) {
+        public boolean isApplicable(State st) {
             return true;
         }
 
         @Override
-        public MagicSquareProblem.State applyTo(MagicSquareProblem.State st) {
+        public State applyTo(State st) {
             VacuumCleanerState vcSt = (VacuumCleanerState) st;
             VacuumCleanerState.RobotPosition newRobotPosition = vcSt.robotPosition;
             VacuumCleanerState.DirtPosition newDirtPosition = vcSt.dirtPosition;
@@ -93,17 +94,17 @@ public class VacuumCleanerProblem extends SearchProblem {
 
     //Since all actions can be applied to any state and there are few of them,
     //we can keep them in a precomputed array to be returned by the "actions" method.
-    private MagicSquareProblem.Action[] actionList;
+    private Action[] actionList;
 
     public VacuumCleanerProblem(VacuumCleanerState initialState) {
         super(initialState);
         //Initialize the list of actions
-        actionList = new MagicSquareProblem.Action[]{new VacuumCleanerAction(VacuumCleanerAction.Type.LEFT),
+        actionList = new Action[]{new VacuumCleanerAction(VacuumCleanerAction.Type.LEFT),
                 new VacuumCleanerAction(VacuumCleanerAction.Type.RIGHT),
                 new VacuumCleanerAction(VacuumCleanerAction.Type.CLEAN)};
     }
 
-    public MagicSquareProblem.Action[] actions(MagicSquareProblem.State st){
+    public Action[] actions(State st){
         //There's no need to dynamically generate the list each time since all actions can be applied to
         //any state. We simply return the precomputed list.
         return actionList;
@@ -111,7 +112,7 @@ public class VacuumCleanerProblem extends SearchProblem {
 
 
     @Override
-    public boolean isGoal(MagicSquareProblem.State st) {
+    public boolean isGoal(State st) {
         return ((VacuumCleanerState) st).dirtPosition == VacuumCleanerState.DirtPosition.NONE;
     }
 }

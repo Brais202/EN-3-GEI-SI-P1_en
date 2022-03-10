@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node{
-    private MagicSquareProblem.State state;
+    private State state;
     private Node parentNode;
-    private MagicSquareProblem.Action action;
+    private Action action;
 
-    public Node(MagicSquareProblem.State state, Node parentNode, MagicSquareProblem.Action action) {
+    public Node(State state, Node parentNode, Action action) {
         this.state = state;
         this.parentNode = parentNode;
         this.action = action;
     }
 
-    public MagicSquareProblem.State getState() {
+    public State getState() {
         return state;
     }
 
@@ -24,13 +24,13 @@ public class Node{
         return parentNode;
     }
 
-    public MagicSquareProblem.Action getAction() {
+    public Action getAction() {
         return action;
     }
 
     public List<Node> succesors(SearchProblem problem){
         List<Node> s = new ArrayList<>();
-        MagicSquareProblem.Action[] actions = problem.actions(state);
+        Action[] actions = problem.actions(state);
         s.add(new Node(problem.result(state, actions[0]), this, actions[0]));
         for(int i = 1;i<actions.length;i++){
             s.add(new Node(problem.result(state, actions[i]), this, actions[i]));

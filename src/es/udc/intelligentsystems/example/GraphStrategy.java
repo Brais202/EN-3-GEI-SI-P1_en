@@ -33,7 +33,7 @@ class GraphSearchStrategy implements SearchStrategy {
 
     @Override
     public Node[] solve(SearchProblem p) throws Exception{
-        List<MagicSquareProblem.State> explored = new ArrayList<>();
+        List<State> explored = new ArrayList<>();
         Queue<Node> frontier = new LinkedList<>();
         Node init = new Node(p.getInitialState(), null, null);
         frontier.add(init);
