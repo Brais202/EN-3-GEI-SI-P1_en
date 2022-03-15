@@ -1,23 +1,21 @@
 package es.udc.intelligentsystems;
-import es.udc.intelligentsystems.Node;
-import es.udc.intelligentsystems.SearchProblem;
-import es.udc.intelligentsystems.SearchStrategy;
-import es.udc.intelligentsystems.MagicSquareProblem;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Algorithm {
-    public class BreadthFirstSearch implements  SearchStrategy {
+    public static class BreadthFirstSearch implements  SearchStrategy {
         Node startNode;
-        Node goalNode;
 
-        public BreadthFirstSearch(Node start, Node goalNode){
+
+        public BreadthFirstSearch(Node start){
             this.startNode = start;
-            this.goalNode = goalNode;
+
         }
 
-        public boolean compute(SearchProblem p){
+        public Node[] solve(SearchProblem p){
 
             if(p.isGoal(startNode.getState())){
                 System.out.println("Goal Node Found!");
@@ -31,34 +29,69 @@ public class Algorithm {
 
             while(!queue.isEmpty()){
                 Node current = queue.remove();
-                if(current.equals(this.goalNode)) {
+                if(p.isGoal(current.getState())) {
                     System.out.println(explored);
-                    return true;
+                    Node[] arrayNode = new Node[explored.size()]; int j=0;
+                    for(Node n :explored){
+                        arrayNode[j]= n;
+                        j++;
+                    }
+                    return arrayNode;
                 }
                 else{
                     if(current.succesors(p).isEmpty())
-                        return false;
+                        return new Node[0];
                     else
                         queue.addAll(current.succesors(p));
                 }
                 explored.add(current);
             }
 
-            return false;
-
-        }
-        @Override
-        public Node[] solve (SearchProblem p) throws Exception {
             return new Node[0];
 
         }
-    }
-    public class depth_first implements  SearchStrategy {
 
-        @Override
-        public Node[] solve (SearchProblem p) throws Exception {
-            return new Node[0];
+    }
+
+    public class DepthFirstSearch implements  SearchStrategy {
+        Node startNode;
+        public DepthFirstSearch(Node start){
+            this.startNode = start;
 
         }
+        @Override
+        public Node[] solve(SearchProblem p){
+            if(p.isGoal(startNode.getState())){
+                System.out.println("Goal Node Found at 0 depth");
+                System.out.println(startNode);
+            }
+            Stack<Node> nodeStack = new Stack<>();
+            ArrayList<Node> visitedNodes = new ArrayList<>();
+
+            nodeStack.add(startNode);
+
+            while(!nodeStack.isEmpty()){
+                Node current = nodeStack.pop();
+
+                if(p.isGoal(current.getState())){
+                    System.out.print(visitedNodes);
+                    System.out.println("Goal node found");
+                    Node[] arrayNode = new Node[visitedNodes.size()]; int j=0;
+                    for(Node n :visitedNodes){
+                        arrayNode[j]= n;
+                        j++;
+                    }
+                    return arrayNode;
+                }
+                else {
+                    visitedNodes.add(current);
+                    nodeStack.addAll(current.succesors(p));
+                }
+            }
+            return new Node[0];
+        }
+
     }
-}
+
+    }
+
