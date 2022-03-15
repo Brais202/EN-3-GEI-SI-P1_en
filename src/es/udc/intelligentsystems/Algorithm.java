@@ -1,5 +1,4 @@
 package es.udc.intelligentsystems;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -7,30 +6,26 @@ import java.util.Stack;
 
 public class Algorithm {
     public static class BreadthFirstSearch implements  SearchStrategy {
-        Node startNode;
-
-
-        public BreadthFirstSearch(Node start){
-            this.startNode = start;
-
-        }
 
         public Node[] solve(SearchProblem p){
 
-            if(p.isGoal(startNode.getState())){
+            if(p.isGoal(p.getInitialState())){
                 System.out.println("Goal Node Found!");
-                System.out.println(startNode);
+                System.out.println(p.getInitialState());
             }
 
             Queue<Node> queue = new LinkedList<>();
             ArrayList<Node> explored = new ArrayList<>();
-            queue.add(this.startNode);
-            explored.add(startNode);
+            Node father=  new Node(p.getInitialState(), null,null);
+            queue.add(father);
+            explored.add(father);
 
             while(!queue.isEmpty()){
                 Node current = queue.remove();
                 if(p.isGoal(current.getState())) {
-                    System.out.println(explored);
+                    System.out.println(explored + "\n Found!");
+                    int numnodes=explored.size();
+                    System.out.println("Number of nodes explored:"+numnodes);
                     Node[] arrayNode = new Node[explored.size()]; int j=0;
                     for(Node n :explored){
                         arrayNode[j]= n;
@@ -53,22 +48,19 @@ public class Algorithm {
 
     }
 
-    public class DepthFirstSearch implements  SearchStrategy {
-        Node startNode;
-        public DepthFirstSearch(Node start){
-            this.startNode = start;
+    public static  class  DepthFirstSearch implements  SearchStrategy {
 
-        }
         @Override
         public Node[] solve(SearchProblem p){
-            if(p.isGoal(startNode.getState())){
+            if(p.isGoal(p.getInitialState())){
                 System.out.println("Goal Node Found at 0 depth");
-                System.out.println(startNode);
+                System.out.println(p.getInitialState());
             }
             Stack<Node> nodeStack = new Stack<>();
             ArrayList<Node> visitedNodes = new ArrayList<>();
 
-            nodeStack.add(startNode);
+            Node father=  new Node(p.getInitialState(), null,null);
+            nodeStack.add(father);
 
             while(!nodeStack.isEmpty()){
                 Node current = nodeStack.pop();
@@ -76,6 +68,8 @@ public class Algorithm {
                 if(p.isGoal(current.getState())){
                     System.out.print(visitedNodes);
                     System.out.println("Goal node found");
+                    int numnodes=visitedNodes.size();
+                    System.out.println("Number of nodes explored:"+numnodes);
                     Node[] arrayNode = new Node[visitedNodes.size()]; int j=0;
                     for(Node n :visitedNodes){
                         arrayNode[j]= n;
@@ -88,6 +82,7 @@ public class Algorithm {
                     nodeStack.addAll(current.succesors(p));
                 }
             }
+
             return new Node[0];
         }
 

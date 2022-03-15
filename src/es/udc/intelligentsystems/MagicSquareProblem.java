@@ -80,11 +80,7 @@ public class  MagicSquareProblem extends SearchProblem{
         super(initialState);
     }
 
-    void printear(int[] a){
-        System.out.println(a[0] +" "+ a[1] +" "+ a[2]);
-        System.out.println(a[3] +" "+ a[4] +" "+ a[5]);
-        System.out.println(a[6] +" "+ a[7] +" "+ a[8]);
-    }
+
 
 
     @Override
