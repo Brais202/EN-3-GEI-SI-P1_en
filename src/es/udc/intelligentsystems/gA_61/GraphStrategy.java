@@ -1,6 +1,5 @@
-package es.udc.intelligentsystems.example;
+package es.udc.intelligentsystems.gA_61;
 
-import es.udc.intelligentsystems.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

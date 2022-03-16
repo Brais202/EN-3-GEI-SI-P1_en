@@ -1,4 +1,4 @@
-package es.udc.intelligentsystems;
+package es.udc.intelligentsystems.gA_61;
 
 public abstract class Action {
     @Override

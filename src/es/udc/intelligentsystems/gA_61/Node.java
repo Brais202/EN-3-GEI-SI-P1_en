@@ -1,4 +1,4 @@
-package es.udc.intelligentsystems;
+package es.udc.intelligentsystems.gA_61;
 
 
 
@@ -31,6 +31,9 @@ public class Node{
     public List<Node> succesors(SearchProblem problem){
         List<Node> s = new ArrayList<>();
         Action[] actions = problem.actions(state);
+        if(actions==null){
+            return new ArrayList<>();
+        }
         s.add(new Node(problem.result(state, actions[0]), this, actions[0]));
         for(int i = 1;i<actions.length;i++){
             s.add(new Node(problem.result(state, actions[i]), this, actions[i]));

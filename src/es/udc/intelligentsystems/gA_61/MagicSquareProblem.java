@@ -1,8 +1,9 @@
-package es.udc.intelligentsystems;
+package es.udc.intelligentsystems.gA_61;
 
-import es.udc.intelligentsystems.example.VacuumCleanerProblem;
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class  MagicSquareProblem extends SearchProblem{
     public static class MagicSquareProblemState extends State{
@@ -17,13 +18,12 @@ public class  MagicSquareProblem extends SearchProblem{
 
         @Override
         public String toString() {
-            StringBuilder s = null;
+            String s = "";
             for(int i=0;i<n*n;i++){
                 assert false;
-                s.append(a[i]);
+                s = s + a[i];
             }
-            assert false;
-            return s.toString();
+            return s;
         }
 
         @Override
@@ -63,13 +63,55 @@ public class  MagicSquareProblem extends SearchProblem{
         @Override
         public boolean isApplicable(State st) {
             MagicSquareProblemState state = (MagicSquareProblemState) st;
-            return (position<=(state.n * state.n) && amount < (state.n * state.n) && state.a[position] == 0 && Arrays.asList(state.a).contains(amount));
+            if(position<(state.n * state.n) && amount <= (state.n * state.n) && state.a[position] == 0 && IntStream.of(state.a).noneMatch(x->x == amount)){
+                int result = (state.n*((state.n*state.n)+1))/2;
+                int amount=0;
+                int x = 0;
+                int[] t = state.a.clone();
+                t[position] = this.amount;
+                //Fila
+                for(int i = 0;i<state.n * state.n;i+=state.n){
+                    for(int j = 0;j< state.n;j++){
+                        amount = amount + t[j+i];
+                    }
+                    if (amount>result){
+                        return false;
+                    }
+                    amount = 0;
+                }
+                //Columna
+                for(int j = 0;j<state.n;j++){
+                    for(int i = 0;i<state.n * state.n;i+=state.n){
+                        amount = amount + t[i+j];
+                    }
+                    if (amount>result){
+                        return false;
+                    }
+                    amount = 0;
+                }
+                //Diagonal
+                for(int i = 0;i<state.n * state.n;i+=state.n){
+                    amount = amount + t[i+x];
+                    x++;
+                }
+                if (amount>result){
+                    return false;
+                }
+                amount = 0;
+                x--;
+                for(int i = 0;i<state.n * state.n;i+=state.n){
+                    amount = amount + t[i+x];
+                    x--;
+                }
+                return amount <= result;
+            }
+            return false;
         }
 
         @Override
         public State applyTo(State st) {
             MagicSquareProblemState state = (MagicSquareProblemState) st;
-            int[] b = state.a;
+            int[] b = state.a.clone();
             b[position] = amount;
 
             return new MagicSquareProblemState(b, state.n);
@@ -86,13 +128,13 @@ public class  MagicSquareProblem extends SearchProblem{
     @Override
     public boolean isGoal(State state){
         MagicSquareProblemState stat = (MagicSquareProblemState) state;
-        int result = (stat.n+((stat.n*stat.n)+1))/2;
+        int result = (stat.n*((stat.n*stat.n)+1))/2;
         int amount=0;
         int x = 0;
         //Fila
         for(int i = 0;i<stat.n * stat.n;i+=stat.n){
-            for(int j = 0;j<i;j++){
-                amount = amount + stat.a[j+stat.n];
+            for(int j = 0;j<stat.n;j++){
+                amount = amount + stat.a[j+i];
             }
             if (amount!=result){
                 return false;
@@ -102,7 +144,7 @@ public class  MagicSquareProblem extends SearchProblem{
         //Columna
         for(int j = 0;j<stat.n;j++){
             for(int i = 0;i<stat.n * stat.n;i+=stat.n){
-                amount = amount + stat.a[i];
+                amount = amount + stat.a[i+j];
             }
             if (amount!=result){
                 return false;
@@ -118,7 +160,7 @@ public class  MagicSquareProblem extends SearchProblem{
             return false;
         }
         amount = 0;
-        x=stat.n;
+        x--;
         for(int i = 0;i<stat.n * stat.n;i+=stat.n){
             amount = amount + stat.a[i+x];
             x--;
@@ -128,19 +170,24 @@ public class  MagicSquareProblem extends SearchProblem{
 
     @Override
     public Action[] actions(State st) {
-        Action[] act = new Action[1024];
+        List<Action> acts = new ArrayList<>();
         int x = 0;
         MagicSquareProblemState state = (MagicSquareProblemState) st;
-        MagicSquareProblemAction action = new MagicSquareProblemAction(0, 0);
+        MagicSquareProblemAction action;
         for(int i = 0;i<state.n*state.n;i++){
-            for(int j = 0;j<state.n*state.n;j++){
+            for(int j = 1;j<=state.n*state.n;j++){
                 action = new MagicSquareProblemAction(i, j);
                 if(action.isApplicable(state)){
-                    act[x] = action;
+                    acts.add(action);
                     x++;
                 }
             }
         }
+        if(acts.isEmpty()){
+            return null;
+        }
+        Action[] act = new Action[acts.size()];
+        act = acts.toArray(act);
         return act;
     }
 
