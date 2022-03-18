@@ -3,6 +3,7 @@ package es.udc.intelligentsystems.g61_12;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.IntStream;
 
 public class  MagicSquareProblem extends SearchProblem{
@@ -60,62 +61,130 @@ public class  MagicSquareProblem extends SearchProblem{
             return ""+position + amount;
         }
 
+        private boolean check(int a, Stack<Integer> stack, int spaces, int amount){
+            for(int i = 0;i<spaces;i++){
+                a+=stack.pop();
+            }
+            if(a<amount){
+                return false;
+            }
+            return true;
+        }
+
         @Override
         public boolean isApplicable(State st) {
             MagicSquareProblemState state = (MagicSquareProblemState) st;
             if(position<(state.n * state.n) && amount <= (state.n * state.n) && state.a[position] == 0 && IntStream.of(state.a).noneMatch(x->x == amount)){
+                Stack<Integer> stack = new Stack<>();;
+                for(int i = 1;i<=state.n*state.n;i++){
+                    stack.add(i);
+                }
+                int[] fila = new int[state.n];
+                for(int i = 0;i< state.n;i++){
+                    fila[i]=0;
+                }
+                int[] columna = new int[state.n];
+                for(int i = 0;i< state.n;i++){
+                    columna[i]=0;
+                }
+                int diagonal1 = 0;
+                int diagonal2 = 0;
                 int result = (state.n*((state.n*state.n)+1))/2;
                 int amount=0;
                 int x = 0;
+                int a = 0;
                 int[] t = state.a.clone();
                 t[position] = this.amount;
+                for(int l : t){
+                    if(stack.contains(l)){
+                        for(int i = 0;i<stack.size();i++){
+                            if(stack.get(i)==l){
+                                stack.remove(i);
+                            }
+                        }
+                    }
+                }
                 //Fila
                 for(int i = 0;i<state.n * state.n;i+=state.n){
                     for(int j = 0;j< state.n;j++){
+                        if(t[j+i]==0){
+                            fila[a]++;
+                        }
                         if (amount>=result){
                             return false;
                         }
                         amount = amount + t[j+i];
                     }
+                    if(!check(amount, (Stack<Integer>) stack.clone(), fila[a], result)){
+                        return false;
+                    }
+                    a++;
                     if (amount>result){
                         return false;
                     }
                     amount = 0;
                 }
+                a=0;
                 //Columna
                 for(int j = 0;j<state.n;j++){
                     for(int i = 0;i<state.n * state.n;i+=state.n){
+                        if(t[i+j]==0){
+                            columna[a]++;
+                        }
                         if (amount>=result){
                             return false;
                         }
                         amount = amount + t[i+j];
                     }
+                    if(!check(amount, (Stack<Integer>) stack.clone(), columna[a], result)){
+                        return false;
+                    }
+                    a++;
                     if (amount>result){
                         return false;
                     }
                     amount = 0;
                 }
+                a=0;
                 //Diagonal
                 for(int i = 0;i<state.n * state.n;i+=state.n){
+                    if(t[i+x]==0){
+                        diagonal1++;
+                    }
+                    a++;
                     if (amount>=result){
                         return false;
                     }
                     amount = amount + t[i+x];
                     x++;
                 }
+                if(!check(amount, (Stack<Integer>) stack.clone(), diagonal1, result)){
+                    return false;
+                }
+                a=0;
                 if (amount>result){
                     return false;
                 }
                 amount = 0;
                 x--;
                 for(int i = 0;i<state.n * state.n;i+=state.n){
+                    if(t[i+x]==0){
+                        diagonal2++;
+                    }
+                    a++;
                     if (amount>=result){
                         return false;
                     }
                     amount = amount + t[i+x];
                     x--;
                 }
-                return amount <= result;
+                if (amount>result){
+                    return false;
+                }
+                if(!check(amount, (Stack<Integer>) stack.clone(), diagonal2, result)){
+                    return false;
+                }
+                return true;
             }
             return false;
         }
