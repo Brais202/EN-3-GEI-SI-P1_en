@@ -12,7 +12,9 @@ public class MagicSquareHeuristic extends Heuristic{
             for(int j = 0;j<stat.n;j++){
                 amount = amount + stat.a[j+i];
             }
-            h+= result-amount;
+            if(result!=amount){
+                h+=1;
+            }
             amount = 0;
         }
         //Columna
@@ -20,7 +22,9 @@ public class MagicSquareHeuristic extends Heuristic{
             for(int i = 0;i<stat.n * stat.n;i+=stat.n){
                 amount = amount + stat.a[i+j];
             }
-            h+= result-amount;
+            if(result!=amount){
+                h+=1;
+            }
             amount = 0;
         }
         //Diagonal
@@ -28,14 +32,18 @@ public class MagicSquareHeuristic extends Heuristic{
             amount = amount + stat.a[i+x];
             x++;
         }
-        h+= result-amount;
+        if(result!=amount){
+            h+=1;
+        }
         amount = 0;
         x--;
         for(int i = 0;i<stat.n * stat.n;i+=stat.n){
             amount = amount + stat.a[i+x];
             x--;
         }
-        h+= result-amount;
+        if(result!=amount){
+            h+=1;
+        }
         return h;
     }
 }

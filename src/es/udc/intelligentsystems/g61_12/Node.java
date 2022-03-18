@@ -26,6 +26,17 @@ public class Node implements Comparable<Node>{
         this.f = cost;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        boolean b = true;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node that = (Node) o;
+
+        return this.state.equals(that.state);
+    }
+
     public State getState() {
         return state;
     }
@@ -55,10 +66,12 @@ public class Node implements Comparable<Node>{
         return s;
     }
 
+
+
     @Override
     public int compareTo(Node o) {
-        float thisValue = this.getCost();
-        float otherValue = o.getCost();
+        float thisValue = this.f;
+        float otherValue = o.f;
         float v = thisValue - otherValue;
         if(v<0){
             return -1;

@@ -34,7 +34,7 @@ public class  MagicSquareProblem extends SearchProblem{
 
             MagicSquareProblemState that = (MagicSquareProblemState) o;
 
-            for(int i = 0;i<n;i++){
+            for(int i = 0;i<n*n;i++){
                 b = b && (a[i] == that.a[i]);
             }
             return b;
@@ -72,6 +72,9 @@ public class  MagicSquareProblem extends SearchProblem{
                 //Fila
                 for(int i = 0;i<state.n * state.n;i+=state.n){
                     for(int j = 0;j< state.n;j++){
+                        if (amount>=result){
+                            return false;
+                        }
                         amount = amount + t[j+i];
                     }
                     if (amount>result){
@@ -82,6 +85,9 @@ public class  MagicSquareProblem extends SearchProblem{
                 //Columna
                 for(int j = 0;j<state.n;j++){
                     for(int i = 0;i<state.n * state.n;i+=state.n){
+                        if (amount>=result){
+                            return false;
+                        }
                         amount = amount + t[i+j];
                     }
                     if (amount>result){
@@ -91,6 +97,9 @@ public class  MagicSquareProblem extends SearchProblem{
                 }
                 //Diagonal
                 for(int i = 0;i<state.n * state.n;i+=state.n){
+                    if (amount>=result){
+                        return false;
+                    }
                     amount = amount + t[i+x];
                     x++;
                 }
@@ -100,6 +109,9 @@ public class  MagicSquareProblem extends SearchProblem{
                 amount = 0;
                 x--;
                 for(int i = 0;i<state.n * state.n;i+=state.n){
+                    if (amount>=result){
+                        return false;
+                    }
                     amount = amount + t[i+x];
                     x--;
                 }

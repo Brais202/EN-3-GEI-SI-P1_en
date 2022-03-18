@@ -14,6 +14,7 @@ public class InformedSearchStrategySquare implements InformedSearchStrategy {
         ArrayList<Node> explored = new ArrayList<>();
         List<Node> succesors = new ArrayList<>();
         Node father=  new Node(p.getInitialState(), null,null, h.evaluate(p.getInitialState()));
+        father.cost = 0;
         queue.add(father);
         explored.add(father);
 
@@ -28,12 +29,25 @@ public class InformedSearchStrategySquare implements InformedSearchStrategy {
             else{
                 succesors = current.succesors(p);
                 for(Node n : succesors){
-                    n.cost = n.cost +;
-                    if(){
-
+                    n.cost = current.cost + 1;
+                    n.f = n.cost + h.evaluate(n.getState());
+                    if(!explored.contains(n)){
+                        if(!queue.contains(n)){
+                            queue.add(n);
+                            continue;
+                        }
+                        for(Node n2 : queue){
+                            if(n.equals(n2)){
+                                if(n.f<n2.cost){
+                                    queue.remove(n);
+                                    queue.add(n);
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
-                System.out.println(""+current.getState()+"  "+current.getCost());
+                System.out.println(""+current.getState()+"  "+current.f);
             }
             explored.add(current);
         }
