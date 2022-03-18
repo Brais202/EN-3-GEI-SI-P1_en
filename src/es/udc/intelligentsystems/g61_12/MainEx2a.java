@@ -1,6 +1,4 @@
-package es.udc.intelligentsystems.gA_61;
-
-import java.util.Arrays;
+package es.udc.intelligentsystems.g61_12;
 
 public class MainEx2a {
     public static void main(String[] args) throws Exception {

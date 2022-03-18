@@ -1,4 +1,4 @@
-package es.udc.intelligentsystems.gA_61;
+package es.udc.intelligentsystems.g61_12;
 import java.util.*;
 
 public class Algorithm {
@@ -31,6 +31,7 @@ public class Algorithm {
 
             Queue<Node> queue = new LinkedList<>();
             ArrayList<Node> explored = new ArrayList<>();
+            List<Node> succesors = new ArrayList<>();
             Node father=  new Node(p.getInitialState(), null,null);
             queue.add(father);
             explored.add(father);
@@ -49,8 +50,9 @@ public class Algorithm {
                     return arrayNode;
                 }
                 else{
-                    if(!current.succesors(p).isEmpty())
-                        queue.addAll(current.succesors(p));
+                    succesors = current.succesors(p);
+                    if(!succesors.isEmpty())
+                        queue.addAll(succesors);
                 }
                 explored.add(current);
             }

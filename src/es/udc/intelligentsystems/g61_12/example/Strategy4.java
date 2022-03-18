@@ -1,6 +1,6 @@
-package es.udc.intelligentsystems.gA_61.example;
+package es.udc.intelligentsystems.g61_12.example;
 
-import es.udc.intelligentsystems.gA_61.*;
+import es.udc.intelligentsystems.g61_12.*;
 
 import java.util.ArrayList;
 import java.util.List;

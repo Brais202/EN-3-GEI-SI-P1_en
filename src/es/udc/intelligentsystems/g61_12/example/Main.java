@@ -1,7 +1,7 @@
-package es.udc.intelligentsystems.gA_61.example;
+package es.udc.intelligentsystems.g61_12.example;
 
-import es.udc.intelligentsystems.gA_61.SearchStrategy;
-import es.udc.intelligentsystems.gA_61.SearchProblem;
+import es.udc.intelligentsystems.g61_12.SearchStrategy;
+import es.udc.intelligentsystems.g61_12.SearchProblem;
 
 public class Main {
 

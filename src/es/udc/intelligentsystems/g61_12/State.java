@@ -1,4 +1,4 @@
-package es.udc.intelligentsystems.gA_61;
+package es.udc.intelligentsystems.g61_12;
 
 public abstract class State {
     /* Any State class must override these methods to be correctly shown and allow comparisons. */
